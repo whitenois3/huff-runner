@@ -9,3 +9,6 @@ out/
 
 # Dotenv file
 .env
+
+# mf mac os
+.DS_Store
