@@ -1,0 +1,29 @@
+// Simple Huff Mock With Constructor Arguments
+
+#define constant SLOT = FREE_STORAGE_POINTER()
+#define constant MEM_PTR = 0x00
+#define constant VALUE = 0x01
+#define constant WORD = 0x20
+
+#define macro CONSTRUCTOR() = takes (0) returns (0) {
+    [WORD]          // [word_size]
+    dup1            // [word_size, word_size]
+    codesize        // [codesize, word_size, word_size]
+    sub             // [arg0_offset, word_size]
+    [MEM_PTR]       // [mem_ptr, arg0_offset, word_size]
+    codecopy        // []
+    [MEM_PTR]       // [zero]
+    mload           // [arg0]
+    [SLOT]          // [slot, arg0]
+    sstore          // []
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    [SLOT]      // [slot]
+    sload       // [value]
+    [MEM_PTR]   // [mem_ptr, value]
+    mstore      // []
+    [WORD]      // [word_size]
+    [MEM_PTR]   // [mem_ptr, word_size]
+    return      // []
+}

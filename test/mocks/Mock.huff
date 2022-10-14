@@ -1,0 +1,14 @@
+// Simple Huff Mock
+
+#define constant MEM_PTR = 0x00
+#define constant VALUE = 0x01
+#define constant WORD = 0x20
+
+#define macro MAIN() = takes (0) returns (0) {
+    [VALUE]     // [value]
+    [MEM_PTR]   // [mem_ptr, value]
+    mstore      // []
+    [WORD]      // [word_size]
+    [MEM_PTR]   // [mem_ptr, word_size]
+    return      // []
+}
