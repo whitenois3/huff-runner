@@ -2,7 +2,7 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import {compile, compileWithVersion, create, create2, appendArgs} from "src/Deploy.sol";
+import {EvmVersion, compile, compileWithVersion, create, create2, appendArgs} from "src/Deploy.sol";
 
 using { compile, compileWithVersion } for Vm;
 using { appendArgs, create, create2 } for bytes;
@@ -28,7 +28,7 @@ contract DeployTest is Test {
 
         assertEq(
             mockBytecode,
-            vm.compileWithVersion("test/mocks/Mock.huff", "paris")
+            vm.compileWithVersion("test/mocks/Mock.huff", EvmVersion.Paris)
         );
     }
 
