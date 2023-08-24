@@ -11,6 +11,16 @@ function compile(Vm vm, string memory path) returns (bytes memory) {
     return vm.ffi(cmd);
 }
 
+function compileWithVersion(Vm vm, string memory path, string memory evmVersion) returns (bytes memory) {
+    string[] memory cmd = new string[](5);
+    cmd[0] = "huffc";
+    cmd[1] = "--bytecode";
+    cmd[2] = path;
+    cmd[3] = "--evm-version";
+    cmd[4] = evmVersion;
+    return vm.ffi(cmd);
+}
+
 error DeploymentFailure(bytes bytecode);
 
 function create(bytes memory bytecode, uint256 value) returns (address deployedAddress) {
