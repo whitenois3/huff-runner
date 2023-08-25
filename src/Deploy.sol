@@ -30,16 +30,16 @@ function compile(Vm vm, string memory path) returns (bytes memory) {
     return vm.ffi(cmd);
 }
 
-function compileWithVersion(Vm vm, string memory path, EvmVersion evmVersion ) returns (bytes memory) {
+function compileWithVersion(Vm vm, string memory path, EvmVersion evmVersion) returns (bytes memory) {
     string[16] memory evmVersions = [
-        "frontier", 
-        "homestead", 
-        "dao", 
-        "tangerine_whistle", 
-        "spurious_dragon", 
-        "byzantium", 
-        "constantinople", 
-        "petersburg", 
+        "frontier",
+        "homestead",
+        "dao",
+        "tangerine_whistle",
+        "spurious_dragon",
+        "byzantium",
+        "constantinople",
+        "petersburg",
         "istanbul",
         "muir_glacier",
         "berlin",
@@ -68,11 +68,7 @@ function create(bytes memory bytecode, uint256 value) returns (address deployedA
     if (deployedAddress == address(0)) revert DeploymentFailure(bytecode);
 }
 
-function create2(
-    bytes memory bytecode,
-    uint256 value,
-    bytes32 salt
-) returns (address deployedAddress) {
+function create2(bytes memory bytecode, uint256 value, bytes32 salt) returns (address deployedAddress) {
     assembly {
         deployedAddress := create2(value, add(bytecode, 0x20), mload(bytecode), salt)
     }
