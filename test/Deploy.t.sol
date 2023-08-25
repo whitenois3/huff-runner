@@ -2,25 +2,27 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import {compile, create, create2, appendArgs} from "src/Deploy.sol";
+import {EvmVersion, compile, compileWithVersion, create, create2, appendArgs} from "src/Deploy.sol";
 
-using { compile } for Vm;
-using { appendArgs, create, create2 } for bytes;
+using {compile, compileWithVersion} for Vm;
+using {appendArgs, create, create2} for bytes;
 
-address constant mockDeployment = address(0xCe71065D4017F316EC606Fe4422e11eB2c47c246);
+address constant mockDeployment = address(0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f);
 
 bytes32 constant salt = 0x713e2693e50c074b604477dac814a71316b96441e6c214c3755e73aa144608d8;
-address constant mockDeployment2 = address(0xA23399c32fb4D4B9FEBB93302509808A599ed0fc);
+address constant mockDeployment2 = address(0x5231BC5F3f030e12764c0441B391516Cfe5C3459);
 
 contract DeployTest is Test {
-
     function testCompile() public {
+        bytes memory mockBytecode = hex"60088060093d393df360015f5260205ff3";
+
+        assertEq(mockBytecode, vm.compile("test/mocks/Mock.huff"));
+    }
+
+    function testCompileWithVersion() public {
         bytes memory mockBytecode = hex"600a8060093d393df3600160005260206000f3";
 
-        assertEq(
-            mockBytecode,
-            vm.compile("test/mocks/Mock.huff")
-        );
+        assertEq(mockBytecode, vm.compileWithVersion("test/mocks/Mock.huff", EvmVersion.Paris));
     }
 
     function testCreate() public {
@@ -36,7 +38,7 @@ contract DeployTest is Test {
     }
 
     function testCreate2() public {
-        address deployment = vm.compile("test/mocks/Mock.huff").create2({ value: 0, salt: salt });
+        address deployment = vm.compile("test/mocks/Mock.huff").create2({value: 0, salt: salt});
 
         assertEq(deployment, mockDeployment2);
     }
@@ -45,10 +47,8 @@ contract DeployTest is Test {
         bytes32[] memory args = new bytes32[](1);
         args[0] = salt;
 
-        (bool success, bytes memory data) = vm.compile("test/mocks/MockWithArg.huff")
-            .appendArgs(args)
-            .create({value: 0})
-            .call(new bytes(0));
+        (bool success, bytes memory data) =
+            vm.compile("test/mocks/MockWithArg.huff").appendArgs(args).create({value: 0}).call(new bytes(0));
 
         require(success, "failed call");
 
