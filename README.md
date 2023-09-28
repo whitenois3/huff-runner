@@ -17,16 +17,14 @@ The following functions are exposed by importing.
 import "forge-std/Script.sol";
 import {compile, create} from "huff-runner/Deploy.sol";
 
-using { compile } for Vm;
 using { create } for bytes;
 
 contract HuffDeployScript is Script {
-    function run() {
-        vm.broadcast();
 
-        address deployment = vm.compile("huff/MyContract.huff").create({value: 0});
-
-        vm.stopBroadcast()
+    function run() public {
+        vm.startBroadcast();
+        address deployment = compile(vm, "huff/MyContract.huff").create({value: 0});
+        vm.stopBroadcast();
     }
 }
 ```
